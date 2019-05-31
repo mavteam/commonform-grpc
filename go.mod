@@ -1,4 +1,4 @@
-module github.com/commonform/open.commonform.org
+module github.com/monax/commonform-daemon
 
 go 1.12
 
