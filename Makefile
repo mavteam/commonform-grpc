@@ -22,7 +22,7 @@ PROTO_GO_FILES_REAL = $(shell find . -type f -name '*.pb.go' -print)
 
 .PHONY: protobuf
 protobuf: clean_protobuf $(PROTO_GO_FILES)
-	@mv ./github.com/commonform/open.commonform.org/*.pb.go clients/golang
+	@mv ./github.com/monax/commonform-grpc/*.pb.go clients/golang
 	@rm -rf ./github.com
 
 .PHONY: clean_protobuf
@@ -31,4 +31,6 @@ clean_protobuf:
 
 .PHONY: protobuf_deps
 protobuf_deps:
-	@GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
+	@GO111MODULE=off go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+	@GO111MODULE=off go get -u google.golang.org/grpc
+	@GO111MODULE=off go get -u github.com/gogo/protobuf/protoc-gen-gogo
