@@ -31,4 +31,6 @@ clean_protobuf:
 
 .PHONY: protobuf_deps
 protobuf_deps:
-	@GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
+	@GO111MODULE=off go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+	@GO111MODULE=off go get -u google.golang.org/grpc
+	@GO111MODULE=off go get -u github.com/gogo/protobuf/protoc-gen-gogo
