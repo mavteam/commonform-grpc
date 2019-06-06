@@ -3,15 +3,7 @@ syntax = "proto3";
 package commonform;
 
 // golang
-option go_package = "github.com/commonform/open.commonform.org";
-
-// java
-option java_multiple_files = true;
-option java_package = "org.commonform.open";
-option java_outer_classname = "CommonFormEngine";
-
-// objective c
-option objc_class_prefix = "CFE";
+option go_package = "github.com/monax/commonform-grpc";
 
 // The service definition for the GRPC server. Here we
 // implement two functions which are needed by many

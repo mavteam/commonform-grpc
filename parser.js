@@ -1,4 +1,4 @@
-var parseCommonMark = require('commonmark-to-commonform')
+var commonmark = require('commonform-commonmark')
 var parseMarkup = require('commonform-markup-parse')
 
 module.exports = function (formData, format, callback) {
@@ -20,7 +20,7 @@ module.exports = function (formData, format, callback) {
     return callback(null, parsed.form, parsed.directions)
   } else if (format === 'commonmark') {
     try {
-      parsed = parseCommonMark(formData)
+      parsed = commonmark.parse(formData)
     } catch (error) {
       return callback(error)
     }

@@ -22,7 +22,7 @@ PROTO_GO_FILES_REAL = $(shell find . -type f -name '*.pb.go' -print)
 
 .PHONY: protobuf
 protobuf: clean_protobuf $(PROTO_GO_FILES)
-	@mv ./github.com/commonform/open.commonform.org/*.pb.go clients/golang
+	@mv ./github.com/monax/commonform-grpc/*.pb.go clients/golang
 	@rm -rf ./github.com
 
 .PHONY: clean_protobuf
