@@ -6,31 +6,20 @@
   "license": "BlueOak-1.0.0",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.4",
-    "ajv": "^6.12.2",
     "commonform-commonmark": "^6.0.0",
-    "commonform-critique": "^1.0.3",
     "commonform-docx": "^5.2.0",
     "commonform-html": "^3.6.0",
-    "commonform-lint": "^3.0.2",
     "commonform-markup-parse": "^1.1.0",
-    "commonform-validate": "^2.0.0",
     "decimal-numbering": "^3.0.2",
     "grpc": "^1.24.2",
-    "grpc-tools": "^1.8.1",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
-    "pino": "^6.2.1",
-    "pino-http": "^5.1.0",
-    "xml-escape": "^1.1.0"
+    "pino": "^6.2.1"
   },
   "devDependencies": {
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
-    "nyc": "^15.0.1",
-    "reformat-json-files": "^1.0.1",
-    "simple-concat": "^1.0.0",
     "standard": "^14.3.3",
-    "tap-diff": "^0.1.1",
     "tape": "^5.0.0"
   },
   "husky": {
@@ -39,10 +28,6 @@
     }
   },
   "lint-staged": {
-    "**.json": [
-      "reformat-json-files",
-      "git add"
-    ],
     "**.js": [
       "standard --fix",
       "git add"
@@ -51,8 +36,6 @@
   "scripts": {
     "lint": "standard",
     "format": "standard --fix",
-    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm run test",
-    "test": "tape test/**.test.js | npx tap-diff",
-    "test-raw": "tape test/**.test.js"
+    "test": "tape test/**.test.js"
   }
 }

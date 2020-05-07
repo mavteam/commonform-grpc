@@ -34,4 +34,3 @@ protobuf_deps:
 	@GO111MODULE=off go get -u google.golang.org/grpc
 	@GO111MODULE=off go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 	@GO111MODULE=off go get -u github.com/deepmap/oapi-codegen/cmd/oapi-codegen
-	@yarn add grpc-tools

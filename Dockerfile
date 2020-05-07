@@ -1,8 +1,9 @@
 FROM node:lts-alpine
 
 WORKDIR /app
-COPY package*.json /app/
-RUN npm install --production
+COPY package.json /app/
+COPY yarn.lock /app/
+RUN yarn install
 
 COPY . /app/
-CMD [ "npm", "start", "--silent" ]
+CMD [ "npm", "start" ]

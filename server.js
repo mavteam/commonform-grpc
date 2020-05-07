@@ -1,8 +1,8 @@
 // servers
-import grpcServer from './grpc-server'
+const grpcServer = require('./grpc-server')
 
 // logging
-import pino from 'pino'
+const pino = require('pino')
 
 // set log level
 const logLevel = process.env.LOG_LEVEL || 'info'
