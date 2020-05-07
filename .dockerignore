@@ -1,6 +1,5 @@
+.github
+clients
 node_modules
-coverage
-.nyc_output
 test
-.travis.yml
 
