@@ -1,29 +1,13 @@
 var commonmark = require('commonform-commonmark')
 var parseMarkup = require('commonform-markup-parse')
 
-module.exports = function (formData, format, callback) {
-  var parsed
+module.exports = async (formData, format) => {
   /* istanbul ignore else */
   if (format === 'json') {
-    try {
-      var form = JSON.parse(formData)
-    } catch (error) {
-      return callback(new Error('invalid form JSON'))
-    }
-    return callback(null, form)
+    return { form: JSON.parse(formData), directions: [], frontmatter: {} }
   } else if (format === 'markup') {
-    try {
-      parsed = parseMarkup(formData)
-    } catch (error) {
-      return callback(new Error('invalid form markup'))
-    }
-    return callback(null, parsed.form, parsed.directions)
+    return parseMarkup(formData)
   } else if (format === 'commonmark') {
-    try {
-      parsed = commonmark.parse(formData)
-    } catch (error) {
-      return callback(error)
-    }
-    return callback(null, parsed.form, parsed.directions)
+    return commonmark.parse(formData)
   }
 }

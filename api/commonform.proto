@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package commonform;
 
-option go_package = "github.com/monax/commonform-grpc";
+option go_package = "github.com/monax/commonform-grpc;commonform_grpc";
 
 // The service definition for the GRPC server. Here we
 // implement two functions which are needed by many

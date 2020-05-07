@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const { Extract, Assemble } = require('../grpc-handler')
 
-const PROTO_PATH = path.join(__dirname, '..', 'requests', 'commonform.proto')
+const PROTO_PATH = path.join(__dirname, '..', 'api', 'commonform.proto')
 const grpc = require('grpc')
 const protoLoader = require('@grpc/proto-loader')
 const packageDefinition = protoLoader.loadSync(
@@ -70,10 +70,10 @@ var sigs = [
   }
 ]
 
-tape('should setup server', function (test) {
+tape('should setup server', (test) => {
   async function Extractor (call, callback) {
     try {
-      let result = await Extract(call)
+      const result = await Extract(call)
       return callback(null, result)
     } catch (error) {
       return callback(error)
@@ -82,7 +82,7 @@ tape('should setup server', function (test) {
 
   async function Assembler (call, callback) {
     try {
-      let result = await Assemble(call)
+      const result = await Assemble(call)
       return callback(null, result)
     } catch (error) {
       return callback(error)
@@ -105,20 +105,7 @@ tape('should setup server', function (test) {
   })
 })
 
-tape('should use external signatures', async function (test) {
-  client.Assemble({ document: doc1, styles: styles, blanks: blanks, useExternalSignatures: true, externalSignatureCount: 3 }, function (error, response) {
-    var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-    test.error(error)
-    test.deepEqual(response.meta, exp1)
-    test.notDeepEqual(response.data.length, 0)
-    fs.writeFile(path.join(__dirname, 'results', 'newSignatures.docx'), response.data, function (err) {
-      test.error(err)
-      test.end()
-    })
-  })
-})
-
-tape('should run an extract', async function (test) {
+tape('should run an extract', (test) => {
   client.Extract(doc1, function (error, response) {
     var exp1 = ['from somewhere', 'then came raisins']
     test.error(error)
@@ -136,7 +123,20 @@ tape('should run an extract', async function (test) {
   })
 })
 
-tape('should run an assemble with all the things', async function (test) {
+tape('should use external signatures', (test) => {
+  client.Assemble({ document: doc1, styles: styles, blanks: blanks, useExternalSignatures: true, externalSignatureCount: 3 }, function (error, response) {
+    var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
+    test.error(error)
+    test.deepEqual(response.meta, exp1)
+    test.notDeepEqual(response.data.length, 0)
+    fs.writeFile(path.join(__dirname, 'results', 'newSignatures.docx'), response.data, function (err) {
+      test.error(err)
+      test.end()
+    })
+  })
+})
+
+tape('should run an assemble with all the things', (test) => {
   client.Assemble({ document: doc1, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
@@ -156,7 +156,7 @@ tape('should run an assemble with all the things', async function (test) {
   })
 })
 
-tape('should run an assemble with null styles', async function (test) {
+tape('should run an assemble with null styles', (test) => {
   client.Assemble({ document: doc1, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
@@ -176,7 +176,7 @@ tape('should run an assemble with null styles', async function (test) {
   })
 })
 
-tape('should run an assemble with null blanks', async function (test) {
+tape('should run an assemble with null blanks', (test) => {
   client.Assemble({ document: doc1, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
@@ -196,7 +196,7 @@ tape('should run an assemble with null blanks', async function (test) {
   })
 })
 
-tape('should run an assemble with null signatures', async function (test) {
+tape('should run an assemble with null signatures', (test) => {
   client.Assemble({ document: doc1, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)

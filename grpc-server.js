@@ -3,7 +3,7 @@ const protoLoader = require('@grpc/proto-loader')
 const path = require('path')
 const { Extract, Assemble } = require('./grpc-handler')
 
-const PROTO_PATH = path.join(__dirname, 'requests', 'commonform.proto')
+const PROTO_PATH = path.join(__dirname, 'api', 'commonform.proto')
 const packageDefinition = protoLoader.loadSync(
   PROTO_PATH,
   {
@@ -24,7 +24,7 @@ module.exports = function (host, port, serverLog) {
         document_meta: call.request.meta,
         document_length: call.request.data.length
       })
-      let result = await Extract(call)
+      const result = await Extract(call)
       serverLog.info({
         event: 'grpc call complete',
         function: 'extract',
@@ -45,7 +45,7 @@ module.exports = function (host, port, serverLog) {
         document_meta: call.request.document.meta,
         document_length: call.request.document.data.length
       })
-      let result = await Assemble(call)
+      const result = await Assemble(call)
       serverLog.info({
         event: 'grpc call complete',
         function: 'assemble',

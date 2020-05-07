@@ -1,21 +1,17 @@
 // servers
-var httpServer = require('./http-server')
-var grpcServer = require('./grpc-server')
+import grpcServer from './grpc-server'
 
 // logging
-var pino = require('pino')
-var pinoHTTP = require('pino-http')
+import pino from 'pino'
 
 // set log level
-var logLevel = process.env.LOG_LEVEL || 'info'
-var serverLog = pino({
+const logLevel = process.env.LOG_LEVEL || 'info'
+const serverLog = pino({
   level: logLevel
 })
 
-var httpS, grpcS, httpSOn, grpcSOn
-
 // gracefully shutdown
-var trap = function () {
+const trap = function () {
   serverLog.trace({ event: 'shutdown signal' })
   cleanup()
 }
@@ -27,48 +23,21 @@ process.on('uncaughtException', function (exception) {
   cleanup()
 })
 
+// clean everything up
+var grpcS
 function cleanup () {
-  if (httpSOn) {
-    httpS.close(function () {
-      serverLog.trace({ event: 'http server gracefully shutdown' })
-      if (grpcSOn) {
-        grpcS.tryShutdown(function () {
-          serverLog.trace({ event: 'grpc server gracefully shutdown' })
-        })
-      }
-    })
-  } else {
-    if (grpcSOn) {
-      grpcS.tryShutdown(function () {
-        serverLog.trace({ event: 'grpc server gracefully shutdown' })
-      })
-    }
-  }
+  grpcS.tryShutdown(function () {
+    serverLog.trace({ event: 'grpc server gracefully shutdown' })
+  })
+
   serverLog.warn({ event: 'engine shutdown' })
   process.exit(0)
 };
 
-// turn on http server
-var httpServerHost = process.env.HTTP_SERVER_HOST || '127.0.0.1'
-var httpServerPort = process.env.HTTP_SERVER_PORT || 8080
-var enablehttpServer = process.env.ENABLE_HTTP_SERVER || 'true'
-httpSOn = (enablehttpServer === 'true')
-if (httpSOn) {
-  serverLog.debug({ event: 'booting http server' })
-  httpS = httpServer(pinoHTTP({ logger: serverLog }))
-  httpS.listen(httpServerPort, httpServerHost, function () {
-    serverLog.warn({ event: 'http server listening', host: httpServerHost, port: httpServerPort })
-  })
-};
-
 // turn on grpc server
-var grpcServerHost = process.env.GRPC_SERVER_HOST || '127.0.0.1'
-var grpcServerPort = process.env.GRPC_SERVER_PORT || 8081
-var enablegrpcServer = process.env.ENABLE_GRPC_SERVER || 'true'
-grpcSOn = (enablegrpcServer === 'true')
-if (grpcSOn) {
-  serverLog.debug({ event: 'booting grpc server' })
-  grpcS = grpcServer(grpcServerHost, grpcServerPort, serverLog)
-  grpcS.start()
-  serverLog.warn({ event: 'grpc server listening', host: grpcServerHost, port: grpcServerPort })
-};
+const grpcServerHost = process.env.GRPC_SERVER_HOST || '127.0.0.1'
+const grpcServerPort = process.env.GRPC_SERVER_PORT || 8081
+serverLog.debug({ event: 'booting grpc server' })
+grpcS = grpcServer(grpcServerHost, grpcServerPort, serverLog)
+grpcS.start()
+serverLog.warn({ event: 'grpc server listening', host: grpcServerHost, port: grpcServerPort })

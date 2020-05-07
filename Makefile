@@ -1,7 +1,6 @@
 # To compile gRPC service also requires protobuf 3 and the protobuf go plugin.
 # See http://www.grpc.io/docs/quickstart/go.html to get started.
 #
-export GO111MODULE := on
 SHELL := /bin/bash
 REPO := $(shell pwd)
 
@@ -16,9 +15,9 @@ PROTO_GO_FILES_REAL = $(shell find . -type f -name '*.pb.go' -print)
 #
 # --------------------------------------------------------------------
 # Protobuffing
-## compile scalia.proto interface definition
+## compile commonform.proto interface definition
 %.pb.go: %.proto
-	protoc -I=requests --go_out=plugins=grpc:. $<
+	@protoc -I=api --go_out=plugins=grpc:. $<
 
 .PHONY: protobuf
 protobuf: clean_protobuf $(PROTO_GO_FILES)
@@ -31,6 +30,8 @@ clean_protobuf:
 
 .PHONY: protobuf_deps
 protobuf_deps:
-	@GO111MODULE=off go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+	@which protoc &>>/dev/null || ( echo "Please install protoc -> https://google.github.io/proto-lens/installing-protoc.html" && false )
 	@GO111MODULE=off go get -u google.golang.org/grpc
-	@GO111MODULE=off go get -u github.com/gogo/protobuf/protoc-gen-gogo
+	@GO111MODULE=off go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+	@GO111MODULE=off go get -u github.com/deepmap/oapi-codegen/cmd/oapi-codegen
+	@yarn add grpc-tools
